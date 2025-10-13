@@ -12,8 +12,8 @@ const Checkout = () => {
         <h2 className="text-2xl text-center flex-1 font-semibold">Finalizar Compra</h2>
       </div>
       {/* CONTENT */}
-      <section className="flex flex-col gap-1 px-3 pt-3 gap-3">
-        <div className='flex gap-1 rounded-xl flex flex-col'>
+      <section className="flex flex-col gap-3 px-3 pt-3">
+        <div className='gap-1 rounded-xl flex flex-col'>
           <label htmlFor="name" className="text-gray-500 text-sm">Nombre</label>
           <input
             id="name"
@@ -22,7 +22,7 @@ const Checkout = () => {
             className='w-full outline-none border-none bg-gray-100 p-2 rounded-lg'
           />
         </div>
-        <div className='flex gap-1 rounded-xl flex flex-col'>
+        <div className='gap-1 rounded-xl flex flex-col'>
           <label htmlFor="phone" className="text-gray-500 text-sm">Número de teléfono</label>
           <input
             id="phone"
@@ -101,7 +101,7 @@ const Checkout = () => {
         </div>
       </div>
       <div className="px-3">
-        <button className="cursor-pointer bg-[#EC6D13] text-white py-3 rounded-md text-sm w-full px-3 mb-6">
+        <button onClick={() => navigate('/voucher')} className="cursor-pointer bg-[#EC6D13] text-white py-3 rounded-md text-sm w-full px-3 mb-6">
           Finalizar compra
         </button>
       </div>
