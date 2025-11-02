@@ -1,9 +1,12 @@
 import express from "express";
 import apiRouter from "./routes";
-import { errorHandler } from "./middlewares/ErrorHandler.middleware";
+import { errorHandler } from "./middlewares/errorHandler.middleware";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3004;
+const PORT = process.env.PORT;
 
 app.use(express.json());
 app.use("/api", apiRouter);
@@ -12,5 +15,5 @@ app.use("/api", apiRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}/api`);
 });
