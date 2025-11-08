@@ -10,7 +10,7 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
+      "@server/*": ["src/*"],
       "@generated/*": ["src/generated/*"]
     }
   },
