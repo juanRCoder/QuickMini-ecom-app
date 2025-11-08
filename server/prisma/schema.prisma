@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Products {
+  id          String @id @default(uuid())
+  name        String    @unique
+  price       Float
+  stock       Int
+  status      String
+  imageUrl    String?
+  categoryId  String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // relationships
+   category    Categories   @relation(fields: [categoryId], references: [id])
+   orderItems  OrderProducts[]
+
+   @@map("products")
+}
+
+model Categories {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // relationships
+  products    Products[]
+
+  @@map("categories")
+}
+
+model Orders {
+  id             String   @id @default(uuid())
+  nameUser       String
+  phoneUser      String
+  typeOfDelivery String
+  address        String?
+  typeOfPayment  String
+  imageVoucher   String?
+  notes          String?
+  total          Float
+  status         String   @default("pending")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // relationships
+  orderProducts    OrderProducts[]
+
+  @@map("orders")
+}
+
+model OrderProducts {
+  id         String   @id @default(uuid())
+  orderId    String
+  productId  String
+  quantity   Int      @default(1)
+  price      Float
+  subtotal   Float
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // relationships
+  order      Orders   @relation(fields: [orderId], references: [id])
+  product    Products @relation(fields: [productId], references: [id])
+
+  @@map("order_products")
+}

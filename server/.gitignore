@@ -9,3 +9,4 @@
 # Directorio de construcción
 dist/
 build/
+/src/generated/prisma

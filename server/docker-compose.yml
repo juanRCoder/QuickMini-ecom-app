@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   db:
-    container_name: futamishop_dev_db
+    container_name: dev_db
     image: postgres
     restart: always
     environment:

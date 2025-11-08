@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { HttpStatus } from "../../constants/HttpStatus";
-import { apiResponse } from "../../utils/apiResponse.utils";
+import { HttpStatus } from "@/constants/HttpStatus";
+import { apiResponse } from "@/utils/apiResponse.utils";
 
 export const getAllProducts = (
   _req: Request,
