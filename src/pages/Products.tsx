@@ -10,7 +10,7 @@ const Products = () => {
     <section className="relative max-w-7xl mx-auto outline-1 bg-white text-gray-800 min-h-screen flex flex-col">
       {/* HEADER */}
       <div className='flex items-center justify-between p-4 shadow-sm'>
-        <h2 className="text-2xl text-center flex-1 font-semibold">EasyShop</h2>
+        <h2 className="text-2xl text-center flex-1 font-semibold">FutamiShop</h2>
         <ShoppingCart onClick={() => navigate('/cart')} className='absolute right-4 cursor-pointer' />
       </div>
       {/* CONTENT */}

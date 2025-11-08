@@ -19,7 +19,7 @@ const Voucher = () => {
       <div className="flex-1 flex items-center justify-center my-10">
         <div className="bg-white w-full mx-4 rounded-2xl max-w-md shadow-sm">
           <div className="flex flex-col gap-1 py-5">
-            <h3 className="text-xl text-center font-semibold">EasyStore</h3>
+            <h3 className="text-xl text-center font-semibold">FutamiShop</h3>
             <p className="text-sm text-center text-gray-400">Av. Siempre Viva 742</p>
           </div>
           <p className="text-sm text-center text-gray-400 border-b border-dashed border-gray-300 pb-5 mx-4">
