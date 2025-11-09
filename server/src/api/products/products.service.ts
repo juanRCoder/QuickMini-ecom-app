@@ -12,6 +12,18 @@ const findAllProducts = async () => {
   return allProducts;
 };
 
+const findProductsByCategoryId = async (categoryId: string) => {
+  return prisma.products.findMany({
+    where: { categoryId },
+    select: {
+      name: true,
+      imageUrl: true,
+      price: true
+    }
+  })
+}
+
 export const ProductServices = {
-  findAllProducts
+  findAllProducts,
+  findProductsByCategoryId
 }

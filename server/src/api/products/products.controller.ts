@@ -24,3 +24,30 @@ export const getAllProducts = async (
     next(error);
   }
 };
+
+export const getProductsByCategoryId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+  try {
+    const productList: productListDto[] =
+      await ProductServices.findProductsByCategoryId(id);
+
+    if (!productList.length) {
+      return res
+        .status(HttpStatus.NOT_FOUND)
+        .json(
+          apiResponse(false, {
+            message: "There are no products for this category",
+          })
+        );
+    }
+
+    return res.status(HttpStatus.OK).json(apiResponse(true, productList));
+  } catch (error) {
+    console.error("[Controller: getProductsByCategoryId]", error);
+    next(error);
+  }
+};
