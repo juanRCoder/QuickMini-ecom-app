@@ -1,11 +1,18 @@
 import { Search, ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { productCards } from '@/mocks/products';
 import { CardProduct } from '@/components/CardProduct';
+import { useProducts } from '@/hooks/useProducts';
+import type { productList } from '@/types/product.types';
+import { useEffect } from 'react';
 
 const Products = () => {
   const navigate = useNavigate()
+  const { data: allProducts } = useProducts.AllProducts()
 
+  useEffect(() => {
+    console.log(allProducts)
+  }, [allProducts])
+  
   return (
     <section className="relative max-w-7xl mx-auto outline-1 bg-white text-gray-800 min-h-screen flex flex-col">
       {/* HEADER */}
@@ -31,8 +38,8 @@ const Products = () => {
       </div>
       <div className="bg-gray-100 flex-1 overflow-auto p-3">
         <div className='grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4'>
-          {productCards.map((p, i) => (
-            <CardProduct key={i} image={p.image} name={p.name} price={p.price} />
+          {allProducts?.map((p: productList, i: number) => (
+            <CardProduct key={i} imageUrl={p.imageUrl} name={p.name} price={p.price} />
           ))}
         </div>
       </div>

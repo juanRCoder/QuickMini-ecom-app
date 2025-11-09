@@ -1,15 +1,21 @@
 
 type CardProductProps = {
-  image: string;
   name: string;
   price: number;
+  imageUrl: string | null;
 }
 
-export const CardProduct = ({ image, name, price }: CardProductProps) => {
+export const CardProduct = ({ imageUrl, name, price }: CardProductProps) => {
   return (
     <div className='bg-white rounded-md shadow-sm flex flex-col justify-between'>
       <div className='flex justify-center items-center flex-1'>
-        <img src={image} className='rounded-t-md object-contain' />
+        <img 
+          src={imageUrl || '/default-img.png'}
+          className={`
+            rounded-t-md object-contain
+            ${!imageUrl && 'opacity-50'}
+          `}
+        />
       </div>
       <div className='rounded-b-md bg-white pt-3 pb-2 px-2 font-semibold'>
         <p>{name}</p>

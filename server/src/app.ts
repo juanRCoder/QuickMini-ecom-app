@@ -1,13 +1,15 @@
 import express from "express";
-import apiRouter from "./routes";
-import { errorHandler } from "./middlewares/errorHandler.middleware";
+import cors from "cors"
 import * as dotenv from "dotenv";
+import apiRouter from "@server/routes";
+import { errorHandler } from "@server/middlewares/errorHandler.middleware";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT;
 
+app.use(cors())
 app.use(express.json());
 app.use("/api", apiRouter);
 
