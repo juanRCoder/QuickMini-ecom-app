@@ -11,7 +11,6 @@ export const getAllProducts = async () => {
 
     const result = await response.json();
     if (!response.ok) throw new Error(result.message);
-    console.log(result)
     return result.payload;
   } catch (error) {
     console.error("[getAllProducts]", error);
@@ -19,6 +18,20 @@ export const getAllProducts = async () => {
   }
 };
 
-export const ProductService = {
-  getAllProducts
-}
+export const getProductsByCategory = async (id: string) => {
+  try {
+    const response = await fetch(`${API}/products/category/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.message);
+    return result.payload;
+  } catch (error) {
+    console.error("[getProductsByCategory]", error);
+    throw error;
+  }
+};

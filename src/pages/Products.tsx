@@ -1,18 +1,34 @@
+import { useMemo, useState } from 'react';
 import { Search, ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { CardProduct } from '@/components/CardProduct';
 import { useProducts } from '@/hooks/useProducts';
+import { useCategories } from '@/hooks/useCategories';
 import type { productList } from '@/types/product.types';
-import { useEffect } from 'react';
+import type { categoryList } from '@/types/categories.types';
 
 const Products = () => {
+  const [onCategory, setOnCategory] = useState<string>('Todos')
+  const [categoryId, setCategoryId] = useState<string>('')
+
   const navigate = useNavigate()
   const { data: allProducts } = useProducts.AllProducts()
+  const { data: productsByCategory } = useProducts.ProductsByCategory(categoryId)
+  const { data: allCategories } = useCategories.AllCategories()
 
-  useEffect(() => {
-    console.log(allProducts)
-  }, [allProducts])
-  
+  const categoriesWithAll = useMemo(() => { // memoriza el array de categorias
+    const base = allCategories || [];
+    return [{ id: '', name: 'Todos' }, ...base];
+  }, [allCategories]);
+
+
+  const handleProductsByCategory = (ctg: categoryList) => {
+    setOnCategory(ctg.name)
+    setCategoryId(ctg.id)
+  }
+
+  const filteredProducts = onCategory === 'Todos' ? allProducts : productsByCategory
+
   return (
     <section className="relative max-w-7xl mx-auto outline-1 bg-white text-gray-800 min-h-screen flex flex-col">
       {/* HEADER */}
@@ -32,14 +48,22 @@ const Products = () => {
         </div>
       </div>
       <div className="flex gap-3 pb-4 px-3 overflow-x-auto">
-        <span className="cursor-pointer bg-[#EC6D13] text-white py-1.5 px-3 rounded-4xl">Todos</span>
-        <span className="cursor-pointer bg-gray-100 text-[#414A56] py-1.5 px-3 rounded-4xl">Bebidas</span>
-        <span className="cursor-pointer bg-gray-100 text-[#414A56] py-1.5 px-3 rounded-4xl">Snacks</span>
+        {categoriesWithAll?.map((ctg: categoryList) => (
+          <span
+            key={ctg.id}
+            className={`cursor-pointer py-1.5 px-3 rounded-4xl select-none
+              ${onCategory === ctg.name ? 'bg-[#EC6D13] text-white' : 'bg-gray-100 text-[#414A56]'}
+              `}
+            onClick={() => handleProductsByCategory(ctg)}
+          >
+            {ctg.name}
+          </span>
+        ))}
       </div>
       <div className="bg-gray-100 flex-1 overflow-auto p-3">
         <div className='grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4'>
-          {allProducts?.map((p: productList, i: number) => (
-            <CardProduct key={i} imageUrl={p.imageUrl} name={p.name} price={p.price} />
+          {filteredProducts?.map((prd: productList, i: number) => (
+            <CardProduct key={i} imageUrl={prd.imageUrl} name={prd.name} price={prd.price} />
           ))}
         </div>
       </div>
