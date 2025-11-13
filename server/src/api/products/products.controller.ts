@@ -5,13 +5,16 @@ import { ProductServices } from "@server/api/products/products.service";
 import { productListDto } from "@server/api/products/products.dto";
 
 export const getAllProducts = async (
-  _req: Request,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  const { searchTerm } = req.query;
+  const term = typeof searchTerm === 'string' ? searchTerm : undefined;
+
   try {
     const productList: productListDto[] =
-      await ProductServices.findAllProducts();
+      await ProductServices.findAllProducts(term);
 
     if (!productList.length) {
       return res

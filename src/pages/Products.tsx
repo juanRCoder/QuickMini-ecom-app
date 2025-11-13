@@ -4,15 +4,18 @@ import { useNavigate } from 'react-router-dom';
 import { CardProduct } from '@/components/CardProduct';
 import { useProducts } from '@/hooks/useProducts';
 import { useCategories } from '@/hooks/useCategories';
+import { useDebounce } from '@/hooks/useDebounce';
 import type { productList } from '@/types/product.types';
 import type { categoryList } from '@/types/categories.types';
 
 const Products = () => {
+  const [searchTerm, setSearchTerm] = useState<string>('')
   const [onCategory, setOnCategory] = useState<string>('Todos')
   const [categoryId, setCategoryId] = useState<string>('')
 
   const navigate = useNavigate()
-  const { data: allProducts } = useProducts.AllProducts()
+  const debouncedSearch = useDebounce(searchTerm, 400);
+  const { data: allProducts } = useProducts.AllProducts(debouncedSearch)
   const { data: productsByCategory } = useProducts.ProductsByCategory(categoryId)
   const { data: allCategories } = useCategories.AllCategories()
 
@@ -25,6 +28,15 @@ const Products = () => {
   const handleProductsByCategory = (ctg: categoryList) => {
     setOnCategory(ctg.name)
     setCategoryId(ctg.id)
+    setSearchTerm('')
+  }
+
+  const handleSearchProducts = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    if (e.target.value !== '') {
+      setOnCategory('Todos');
+      setCategoryId('');
+    }
   }
 
   const filteredProducts = onCategory === 'Todos' ? allProducts : productsByCategory
@@ -43,6 +55,8 @@ const Products = () => {
           <input
             type='text'
             placeholder='Buscar productos'
+            value={searchTerm}
+            onChange={(e) => handleSearchProducts(e)}
             className='w-full outline-none border-none'
           />
         </div>
@@ -60,12 +74,21 @@ const Products = () => {
           </span>
         ))}
       </div>
-      <div className="bg-gray-100 flex-1 overflow-auto p-3">
-        <div className='grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4'>
-          {filteredProducts?.map((prd: productList, i: number) => (
-            <CardProduct key={i} imageUrl={prd.imageUrl} name={prd.name} price={prd.price} />
-          ))}
-        </div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
+        {filteredProducts && filteredProducts.length > 0 ? (
+          filteredProducts.map((prd: productList) => (
+            <CardProduct
+              key={prd.id}
+              imageUrl={prd.imageUrl}
+              name={prd.name}
+              price={prd.price}
+            />
+          ))
+        ) : (
+          <div className="col-span-full text-center text-gray-500 py-10 select-none">
+            No se encontraron productos
+          </div>
+        )}
       </div>
     </section>
   )

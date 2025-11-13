@@ -1,8 +1,13 @@
-import { PrismaClient } from "@generated/prisma/client";
+import { PrismaClient, Prisma } from "@generated/prisma/client";
 const prisma = new PrismaClient();
 
-const findAllProducts = async () => {
+const findAllProducts = async (searchTerm?: string) => {
+  const whereConditions = searchTerm
+    ? { name: { contains: searchTerm, mode: Prisma.QueryMode.insensitive }}
+    : undefined
+
   const allProducts = await prisma.products.findMany({
+    where: whereConditions,
     select: {
       id: true,
       name: true,

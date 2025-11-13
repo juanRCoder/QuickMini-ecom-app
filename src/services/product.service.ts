@@ -1,8 +1,9 @@
 const API = import.meta.env.VITE_API_DEV;
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (searchTerm?: string) => {
   try {
-    const response = await fetch(`${API}/products`, {
+    const queryParam = searchTerm ? `?searchTerm=${encodeURIComponent(searchTerm)}` : "";
+    const response = await fetch(`${API}/products${queryParam}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
