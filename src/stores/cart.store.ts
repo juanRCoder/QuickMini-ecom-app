@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { CartItem } from "@/types/cart.types";
+import type { CartItemList } from "@/types/cart.types";
 
 type CartState = {
-  items: CartItem[];
-  addItem: (item: CartItem) => void;
+  items: CartItemList[];
+  addItem: (item: CartItemList) => void;
   updateQuantity: (id: string, quantity: number) => void;
   removeItem: (id: string) => void;
   clearCart: () => void;

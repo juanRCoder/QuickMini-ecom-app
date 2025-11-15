@@ -1,12 +1,13 @@
 import { ArrowLeft } from "lucide-react"
 import { useNavigate } from "react-router-dom";
-import { productCards } from "@/mocks/products";
 import { CartItem } from "@/components/CartItem";
+import { useCartStore } from "@/stores/cart.store";
 
 const Cart = () => {
   const navigate = useNavigate()
+  const { items } = useCartStore()
 
-  const subTotal = productCards.reduce((acc, p) => acc + p.price, 0);
+  const totalProductInCart = items.reduce((acc, p) => (acc + p.price) * p.quantity, 0);
   return (
     <section className="relative max-w-7xl mx-auto outline-1 bg-white text-gray-800 min-h-screen flex flex-col">
       {/* HEADER */}
@@ -16,13 +17,19 @@ const Cart = () => {
       </div>
       {/* CONTENT */}
       <div className='py-4 px-3 flex flex-col gap-6 flex-1'>
-        {productCards.map((p, i) => (
-          <CartItem key={i} image={p.image} name={p.name} price={p.price} />
-        ))}
+        {items && items.length > 0 ? (
+          items.map((item, i) => (
+            <CartItem key={i} item={item} />
+          ))
+        ) : (
+          <div className="col-span-full text-center text-gray-500 py-10 select-none">
+            No hay productos en el carrito
+          </div>
+        )}
       </div>
-      <div className="flex justify-between border-t-2 border-t-[#F3F4F6] pt-2 pb-6 px-3">
-        <p>Subtotal</p>
-        <p className="font-semibold">S/ {subTotal.toFixed(2)}</p>
+      <div className="flex justify-between pb-6 px-3 border-t-2 border-gray-300 pt-2 font-semibold">
+        <p>Total:</p>
+        <p>S/ {totalProductInCart.toFixed(2)}</p>
       </div>
       <div className="px-3">
         <button onClick={() => navigate('/checkout')} className="cursor-pointer bg-[#EC6D13] text-white mb-4 py-3 px-3 rounded-md text-sm w-full">

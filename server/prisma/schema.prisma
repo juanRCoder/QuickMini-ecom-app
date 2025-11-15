@@ -26,8 +26,8 @@ model Products {
   updatedAt   DateTime  @updatedAt
 
   // relationships
-   category    Categories   @relation(fields: [categoryId], references: [id])
-   orderItems  OrderProducts[]
+  category    Categories   @relation(fields: [categoryId], references: [id])
+  orderItems  OrderProducts[]
 
    @@map("products")
 }
@@ -45,18 +45,18 @@ model Categories {
 }
 
 model Orders {
-  id             String   @id @default(uuid())
-  nameUser       String
-  phoneUser      String
-  typeOfDelivery String
-  address        String?
-  typeOfPayment  String
-  imageVoucher   String?
-  notes          String?
-  total          Float
-  status         String   @default("pending")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id                String   @id @default(uuid())
+  guestUserName     String?
+  guestUserPhone    String?
+  typeOfDelivery    String
+  guestUserAddress  String?
+  typeOfPayment     String
+  imageVoucher      String?
+  notes             String?
+  total             Float
+  status            String   @default("pending")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   // relationships
   orderProducts    OrderProducts[]

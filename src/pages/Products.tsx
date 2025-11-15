@@ -5,6 +5,7 @@ import { CardProduct } from '@/components/CardProduct';
 import { useProducts } from '@/hooks/useProducts';
 import { useCategories } from '@/hooks/useCategories';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useCartStore } from '@/stores/cart.store';
 import type { productList } from '@/types/product.types';
 import type { categoryList } from '@/types/categories.types';
 
@@ -14,6 +15,7 @@ const Products = () => {
   const [categoryId, setCategoryId] = useState<string>('')
 
   const navigate = useNavigate()
+  const { items } = useCartStore()
   const debouncedSearch = useDebounce(searchTerm, 400);
   const { data: allProducts } = useProducts.AllProducts(debouncedSearch)
   const { data: productsByCategory } = useProducts.ProductsByCategory(categoryId)
@@ -46,7 +48,17 @@ const Products = () => {
       {/* HEADER */}
       <div className='flex items-center justify-between p-4 shadow-sm'>
         <h2 className="text-2xl text-center flex-1 font-semibold">FutamiShop</h2>
-        <ShoppingCart onClick={() => navigate('/cart')} className='absolute right-4 cursor-pointer' />
+        <div
+          onClick={() => navigate('/cart')}
+          className='flex items-center justift-center relative cursor-pointer'
+        >
+          {items.length > 0 && (
+            <span className='flex items-center justify-center absolute right-7 bottom-0 z-50 bg-orange-500 text-white rounded-full size-7 text-sm'>
+              {items.length}
+            </span>
+          )}
+          <ShoppingCart className='absolute right-4' />
+        </div>
       </div>
       {/* CONTENT */}
       <div className='py-4 px-3'>
@@ -66,7 +78,7 @@ const Products = () => {
           <span
             key={ctg.id}
             className={`cursor-pointer py-1.5 px-3 rounded-4xl select-none
-              ${onCategory === ctg.name ? 'bg-[#EC6D13] text-white' : 'bg-gray-100 text-[#414A56]'}
+              ${onCategory === ctg.name ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700'}
               `}
             onClick={() => handleProductsByCategory(ctg)}
           >
@@ -74,15 +86,10 @@ const Products = () => {
           </span>
         ))}
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 px-4 bg-gray-50 py-4">
         {filteredProducts && filteredProducts.length > 0 ? (
           filteredProducts.map((prd: productList) => (
-            <CardProduct
-              key={prd.id}
-              imageUrl={prd.imageUrl}
-              name={prd.name}
-              price={prd.price}
-            />
+            <CardProduct key={prd.id} product={prd} />
           ))
         ) : (
           <div className="col-span-full text-center text-gray-500 py-10 select-none">
