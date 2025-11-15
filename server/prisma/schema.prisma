@@ -46,8 +46,8 @@ model Categories {
 
 model Orders {
   id                String   @id @default(uuid())
-  guestUserName     String?
-  guestUserPhone    String?
+  guestUserName     String
+  guestUserPhone    String
   typeOfDelivery    String
   guestUserAddress  String?
   typeOfPayment     String
